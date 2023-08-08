@@ -114,4 +114,13 @@ class HouseController extends Controller
         
         return view('compronents.page.detail',$data);
     }
+    public function filterhouse(Request $request)
+    {
+        $data['debt'] =  DB::table('debts')
+        ->where('house_id','1')->get();
+        $data['houses'] = DB::table('houses')
+        ->where('housenumber','like','%'.$request->housenumber.'%')
+        ->paginate(6);  
+        return view('compronents.page.tablehouse',$data);
+    }
 }

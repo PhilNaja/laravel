@@ -26,51 +26,64 @@
 
     </script>
     <div class="row">
-        <div class="col-sm-4">
-            <div class="card">
-                <div class="card-header">
-                    เพิ่มหนี้คงค้าง
-                </div>
-                <div class="card-body">
-                    <form action="{{url('debt')}}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-12">
-                                <strong>House Number:</strong>
+        <div class="card">
+            <div class="card-body">
+                <form action="{{url('debt')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="row ms-5 me-5">
+                        <div class="row mt-3">
+                            <div class="col">
+                                <strong>Housenumber:</strong>
                                 <select class="form-select" aria-label="Default select example" name="house_id">
                                     @foreach($house as $item)
                                     <option value={{$item->id}}>{{$item->housenumber}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group my-3">
-                                    <strong>Amount:</strong>
-                                    <input type="number" value=0 name="amount" class="form-control"
-                                        placeholder="Amount">
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group my-3">
-                                    <strong>Note:</strong>
-                                    <input type="text" name="note" class="form-control" placeholder="Note">
-                                </div>
+                            <div class="col">
+                                <strong>Amount:</strong>
+                                <input type="number" value=0 name="amount" class="form-control" placeholder="Amount">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success">Save</button>
-                    </form>
 
-                </div>
+                        <div class="col">
+
+                            <label for="exampleFormControlTextarea1" class="form-label"><strong>Note:</strong></label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" name="note"
+                                rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="container mt-3">
+                        <div class="row text-center">
+                            <div class="col">
+                                <button type="submit" class="btn btn-outline-primary">
+                                    {{ __('SUBMIT') }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
             </div>
         </div>
-        <div class="col-sm-8">
-            <div class="card">
-                <div class="card-header">
-                    หนี้คงค้าง
+        <div class="card mt-2">
+            <div class="card-body">
+            <div class='container-sm mt-1 mb-3 d-flex justify-content-end align-items-end'>
+                <div class="col-3">
+                    <form method="GET" action="{{ url('filterdebtpage') }}">
+                        @csrf
+                        <div class="input-group mb-1">
+                            <input type="number" class="form-control" placeholder="Enter Housenumber" name="housenumber"
+                                value="{{Request::get("housenumber")}}" aria-label="Recipient's username"
+                                aria-describedby="button-addon2">
+                            <button class="btn btn-outline-primary" type="submit" id="button-addon2">search</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
+            </div>
+                <div class="table-responsive">
+                    <table class="table me-4 ms-4">
+                        <thead class='table-primary'>
                             <tr>
                                 <th scope="col">บ้านเลขที่</th>
                                 <th scope="col">ทั้งหมด</th>
@@ -87,16 +100,23 @@
                                 <td>{{$item->balance}}</td>
                                 <td>{{$item->note}}</td>
                                 <td>
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                <div class="btn-group">
+                                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                                         data-bs-target="#paid{{$item->id}}">
                                         Paid
                                     </button>
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                        data-bs-target="#Modaldeletedebt{{$item->id}}">
+                                        Delete
+                                    </button>
+                                    </div>
+                                    <!-- Modalpaid -->
                                     <div class="modal fade" id="paid{{$item->id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                                                    <h5 class="modal-title" id="exampleModalLabel">ชำระหนี้คงค้าง</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
@@ -104,7 +124,7 @@
                                                     enctype="multipart/form-data">
                                                     @csrf
                                                     <div class="modal-body">
-                                                        ชำระหนี้คงค้าง
+                                                        
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <div class="form-group my-2">
@@ -124,10 +144,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#Modaldeletedebt{{$item->id}}">
-                                        Delete
-                                    </button>
+                                    <!-- ModalDelete -->
                                     <div class="modal fade" id="Modaldeletedebt{{$item->id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -163,6 +180,11 @@
             </div>
         </div>
     </div>
+
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- ModalPaid -->
 
 @endsection

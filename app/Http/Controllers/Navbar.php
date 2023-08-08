@@ -6,14 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class Navbar extends Controller
 {
     public function userpage(){
-        $data['users'] = DB::table('users')->paginate(12);  
+        $data['users'] = DB::table('users')->paginate(6);  
         return view('compronents.page.useraccess',$data);
     }
-    public function meterpage()
+    public function meterpage() 
     {   
         $data['houses'] = DB::table('houses')->get(); 
         $data['metre'] = DB::table('metres')
@@ -27,7 +29,7 @@ class Navbar extends Controller
     {
         $data['debt'] =  DB::table('debts')
         ->where('house_id','1')->get();
-        $data['houses'] = DB::table('houses')->paginate(12);  
+        $data['houses'] = DB::table('houses')->paginate(6);  
         return view('compronents.page.tablehouse',$data);
     }
     public function bill()
@@ -43,7 +45,7 @@ class Navbar extends Controller
         $data['debt']=DB::table('debts')
         ->join('houses','debts.house_id','=','houses.id')
         ->select('debts.id','houses.housenumber','debts.total_balance','debts.balance','debts.note')
-        ->get();
+        ->paginate(6);
         return view('compronents.page.debt',$data);
     }
     public function type()
@@ -51,5 +53,21 @@ class Navbar extends Controller
         $data['fee']=DB::table('fees')->get();
         $data['meter_type']=DB::table('meter_types')->get();
         return view('compronents.page.type',$data);
+    }
+    public function changePW()
+    {
+        return view('compronents.page.changepassword');
+    }
+    public function password_action(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required|current_password',
+            'new_password' => 'required|confirmed',
+        ]);
+        $user = User::find(Auth::id());
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+        $request->session()->regenerate();
+        return back()->with('success', 'Password changed!');
     }
 }

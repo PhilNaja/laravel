@@ -58,7 +58,15 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <div class="container mt-3">
+                                <div class="row text-center">
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-outline-primary">
+                                            {{ __('SUBMIT') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                     </form>
                 </div>
             </div>
@@ -69,7 +77,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table">
-                        <thead>
+                        <thead  class="table-primary">
                             <tr>
                                 <th scope="col">No.</th>
                                 <th scope="col">ประเภท</th>
@@ -92,11 +100,29 @@
                                 @endif
                                 <td>{{$metre->updated_at}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
                                         data-bs-target="#Modaledit{{$metre->id}}">
                                         Update
                                     </button>
-                                    <!-- Modal -->
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                        data-bs-target="#Modaldeletemetre{{$metre->id}}">
+                                        Delete
+                                    </button>
+                                    @if($metre->status == '0')
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                        data-bs-target="#Modalmetreon{{$metre->id}}">
+                                        On
+                                    </button>
+                                    @endif
+                                    @if($metre->status == '1')
+                                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                        data-bs-target="#Modalmetreoff{{$metre->id}}">
+                                        Off
+                                    </button>
+                                    @endif
+    </div>
+                                    <!-- Modaledit -->
                                     <div class="modal fade" id="Modaledit{{$metre->id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -130,10 +156,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#Modaldeletemetre{{$metre->id}}">
-                                        Delete
-                                    </button>
+                                    
+                                    <!-- ModalDelete -->
                                     <div class="modal fade" id="Modaldeletemetre{{$metre->id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -159,11 +183,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @if($metre->status == '0')
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#Modalmetreon{{$metre->id}}">
-                                        On Metre
-                                    </button>
+                                    
+                                    <!-- ModalOn -->
                                     <div class="modal fade" id="Modalmetreon{{$metre->id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -190,12 +211,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @endif
-                                    @if($metre->status == '1')
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#Modalmetreoff{{$metre->id}}">
-                                        Off Metre
-                                    </button>
+                            
+                                    <!-- ModalOff -->
                                     <div class="modal fade" id="Modalmetreoff{{$metre->id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -222,7 +239,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @endif
                                 </td>
                             </tr>
                             @endforeach

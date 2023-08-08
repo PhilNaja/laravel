@@ -32,10 +32,12 @@ Route::get('/', function () {
 Auth::routes(['verify'=>true]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('/changePW',[Navbar::class,'changePW']);
+    Route::post('password', [Navbar::class, 'password_action'])->name('password.action');
     Route::middleware(['role'])->group(function(){
         //1stpage
         Route::get('admin/home', [HomeController::class, 'adminhome'])->name('admin.home');
-    
+        Route::get('/filterhome',[HomeController::class,'filterhome']);
     
     
         // Route::get('data',[HomeController::class,'index']);
@@ -61,14 +63,16 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('/updatefeetype/{id}',[Type::class,'updatefeetype']);
         Route::get('/destroyfee/{id}',[Type::class,'destroyfee']);
         Route::get('/destroymt/{id}',[Type::class,'destroymt']);
-        Route::post('/addfee',[Type::class,'addfee']);
-        Route::match(['get', 'post'],'/addmeter',[Type::class,'addmeter']);
+        Route::post('/addType',[Type::class,'addType']);
+        // Route::match(['get', 'post'],'/addmeter',[Type::class,'addmeter']);
         Route::put('/updatemetertype/{id}',[Type::class,'updatemetertype']);
     
         //house
         Route::get('/destroy',[HouseController::class,'destroy']);
         Route::put('/update/{id}',[HouseController::class,'update']);
         Route::post('addhome',[HouseController::class,'store']);
+        Route::get('/filterhouse',[HouseController::class,'filterhouse']);
+        
         
         //metre
         Route::get('/destroymetre',[Metre::class,'destroymetre']);
@@ -81,6 +85,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/destroydebt',[Debt::class,'destroydebt']);
         Route::post('/updatedebt/{id}',[Debt::class,'updatedebt']);
         Route::post('/debt',[Debt::class,'debt']);
+        Route::get('/filterdebtpage',[Debt::class,'filterdebtpage']);
+        
         
         //bill
         Route::post('/addbill',[bill::class,'addbill']);
@@ -94,6 +100,11 @@ Route::group(['middleware' => 'auth'], function () {
         //user
         Route::post('/create',[useraccess::class,'create']);
         Route::get('/updaterole',[useraccess::class,'updaterole']);
+        Route::get('/usersreach',[useraccess::class,'usersreach']);
+        
+
+        
+        
         
     });
     

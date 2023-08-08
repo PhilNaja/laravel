@@ -23,23 +23,32 @@ class useraccess extends Controller
     public function create(Request $request)
     {
         $data=DB::table('users')->where('email',$request->email)->get();
-        try {
-            if($data=='[]'){
-                DB::table('users')->insert([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'role'=>'0',
-                    'password' => Hash::make($request->password),
-        
-                ]);
-                return redirect()->back()->with('success','สำเร็จ');
-            }else{
-                return redirect()->back()->withErrors('Email นี้ถูกใช้ไปแล้ว');
-            }
+        if($request->password==$request->password_confirmation){
+            try {
+                if($data=='[]'){
+                    DB::table('users')->insert([
+                        'name' => $request->name,
+                        'email' => $request->email,
+                        'role'=>'0',
+                        'password' => Hash::make($request->password),
             
-        } catch (\Throwable $th) {
-            return redirect()->back()->withErrors('ไม่สามารถแก้ไขข้อมูลได้');
+                    ]);
+                    return redirect()->back()->with('success','สำเร็จ');
+                }else{
+                    return redirect()->back()->withErrors('Email นี้ถูกใช้ไปแล้ว');
+                }
+                
+            } catch (\Throwable $th) {
+                return redirect()->back()->withErrors('ไม่สามารถแก้ไขข้อมูลได้');
+            }
+        }else{
+            return redirect()->back()->withErrors('รหัสไม่เหมือนกัน');
         }
         
+        
+    }
+    public function usersreach(Request $request){
+        $data['users'] = DB::table('users')->where('name','like','%'.$request->name.'%')->paginate(8);  
+        return view('compronents.page.useraccess',$data);
     }
 }

@@ -18,81 +18,83 @@
         {{ session('success') }}
     </div>
     @endif
+    <script>
+        function closeAlert() {
+            document.getElementById('success-alert').style.display = 'none';
+        }
+        setTimeout(closeAlert, 3000);
+
+    </script>
     <div class="row">
-        <div class="col-md-3">
-            <div class="card mb-3">
-                <div class="card-header">
-                    เพิ่มบิล
-                </div>
-                <div class="card-body">
-                    <form action="{{url('addbill')}}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="modal-body">
-                            Are you sure you want to Crete Bill
-                            <div class="row">
-                            </div>
+        <div class='container-sm mt-1 mb-3 d-flex justify-content-end align-items-end'>
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#Modalbill">
+                Create Bills
+            </button>
+            <div class="modal fade" id="Modalbill" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <button type="submit" class="btn btn-success mt-1">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-9">
-            <div class="card">
-                <div class="card-header">
-                    บิล
-                    <!-- <form action="{{url('filterbill')}}" method="GET" enctype="multipart/form-data">
-                        @csrf
-                        
-                        <label>Date</lable>
-                            <select class="form-select" aria-label="Default select example" name="date">
-                                <option selected>Open this select menu</option>
-                                @foreach($billingcycle as $item)
-                                        <option value={{$item->billingcycle}}>{{$item->billingcycle}}</option>
-                                        @endforeach 
-                            </select>
-                            <button type="submit"  class="btn btn-success mt-1">Submit</button>
-                    </form> -->
-                </div>
-                <div class="card-body">
-                    <div class='container-sm mt-1 mb-3 d-flex justify-content-end align-items-end'>
-                        <form class="row g-3" action="{{url('filterbill')}}" method="GET" enctype="multipart/form-data">
-                            <div class="col-auto">
-                                <select class="form-select" aria-label="Default select example" name="mount">
-                                    <option selected value={{Request::get("mount")?? date("m")}}>{{Request::get("mount")?? date("m")}}</option>
-                                    <option value="01">01</option>
-                                    <option value="02">02</option>
-                                    <option value="03">03</option>
-                                    <option value="04">04</option>
-                                    <option value="05">05</option>
-                                    <option value="06">06</option>
-                                    <option value="07">07</option>
-                                    <option value="08">08</option>
-                                    <option value="09">09</option>
-                                    <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
-                                </select>
+                        <form action="{{url('/addbill')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="modal-body">
+                                Are you sure you want Create Bills
                             </div>
-                            <div class="col-auto">
-                                <select class="form-select" aria-label="Default select example" name="year">
-                                    <option selected value="{{Request::get("year")?? date("Y")}}">{{Request::get("year")?? date("Y")}}</option>
-                                    @php
-                                    $currentYear = now()->year; // ปีปัจจุบัน
-                                    $endYear = $currentYear - 15; // ปีที่ลงมา 15 ปี
-                                    @endphp
-                                    @for ($year = $currentYear; $year >= $endYear; $year--)
-                                    <option value="{{ $year }}">{{ $year }}</option>
-                                    @endfor
-                                </select>
-                            </div>
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-primary mb-3">Filter</button>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-primary"
+                                    data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-outline-primary">Create</button>
                             </div>
                         </form>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class='container-sm mt-1 mb-3 d-flex justify-content-end align-items-end'>
+                    <form class="row g-3" action="{{url('filterbill')}}" method="GET" enctype="multipart/form-data">
+                        <div class="col-auto">
+                            <select class="form-select" aria-label="Default select example" name="mount">
+                                <option selected value={{Request::get("mount")?? date("m")}}>
+                                    {{Request::get("mount")?? date("m")}}</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <select class="form-select" aria-label="Default select example" name="year">
+                                <option selected value="{{Request::get("year")?? date("Y")}}">
+                                    {{Request::get("year")?? date("Y")}}</option>
+                                @php
+                                $currentYear = now()->year; // ปีปัจจุบัน
+                                $endYear = $currentYear - 15; // ปีที่ลงมา 15 ปี
+                                @endphp
+                                @for ($year = $currentYear; $year >= $endYear; $year--)
+                                <option value="{{ $year }}">{{ $year }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-outline-primary mb-3">Filter</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
                     <table class="table">
-                        <thead class='table-success'>
+                        <thead class='table-primary'>
                             <tr>
                                 <th>เลขที่บิล</th>
                                 <th>รอบบิล</th>
@@ -117,11 +119,25 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a class='btn btn-success' href="{{ url('detail/'.$item->id) }}">รายละเอียด</a>
-                                    <button type="button" class="btn btn-primary ms-1" data-bs-toggle="modal"
-                                        data-bs-target="#fine{{$item->id}}">
-                                        ค่าปรับ
-                                    </button>
+                                    <div class="btn-group">
+                                        <a class='btn btn-outline-primary'
+                                            href="{{ url('detail/'.$item->id) }}">รายละเอียด</a>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                            data-bs-target="#fine{{$item->id}}">
+                                            ค่าปรับ
+                                        </button>
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                            data-bs-target="#Modaldelete{{$item->id}}">
+                                            Delete
+                                        </button>
+                                        @if($item->status==0)
+                                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                            data-bs-target="#ststus{{$item->id}}">
+                                            Publish
+                                        </button>
+                                        @endif
+                                    </div>
+                                    <!-- ModalFine -->
                                     <div class="modal fade" id="fine{{$item->id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -156,10 +172,8 @@
                                         </div>
 
                                     </div>
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#Modaldelete{{$item->id}}">
-                                        Delete
-                                    </button>
+
+                                    <!-- Modaldelete -->
                                     <div class="modal fade" id="Modaldelete{{$item->id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -185,11 +199,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @if($item->status==0)
-                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
-                                        data-bs-target="#ststus{{$item->id}}">
-                                        Publish
-                                    </button>
+
+                                    <!-- ststusModal -->
                                     <div class="modal fade" id="ststus{{$item->id}}" tabindex="-1"
                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -215,7 +226,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @endif
+
                                 </td>
                             </tr>
                             @endforeach
@@ -224,7 +235,6 @@
                     </table>
                 </div>
             </div>
-
         </div>
 
     </div>

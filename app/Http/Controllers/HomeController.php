@@ -44,28 +44,73 @@ class HomeController extends Controller
     {
         $data['feetotal'] = DB::table('fee_transections')
             ->join('fees', 'fee_transections.fee_id', '=', 'fees.id')
+            ->where('fee_transections.billingcycle',date("m-Y"))
             ->selectRaw('SUM(fees.price_unit) as total')
             ->first()
             ->total;
         $data['debt'] = DB::table('debts')
         ->sum('total_balance');
         $data['metre'] = DB::table('metre_transections')
+        ->where('billingcycle',date("m-Y"))
         ->sum('amount');
         $data['billamount'] = DB::table('bills')
+        ->where('billingcycle',date("m-Y"))
         ->sum('amount');
         $data['billispaid'] = DB::table('bills')
         ->where('ispaid',1)
+        ->where('billingcycle',date("m-Y"))
         ->sum('amount');
         $data['billnotpaid'] = DB::table('bills')
+        ->where('billingcycle',date("m-Y"))
         ->where('ispaid',0)
         ->sum('amount');
         $data['notpaid'] = DB::table('bills')
+        ->where('billingcycle',date("m-Y"))
         ->where('ispaid',0)
         ->count('id');
         $data['ispaid'] = DB::table('bills')
+        ->where('billingcycle',date("m-Y"))
         ->where('ispaid',1)
         ->count('id');
         $data['allbill'] = DB::table('bills')
+        ->where('billingcycle',date("m-Y"))
+        ->count('id');
+        return view('homeadmin',$data);
+    }
+    public function filterhome(Request $request)
+    {
+        $data['feetotal'] = DB::table('fee_transections')
+            ->join('fees', 'fee_transections.fee_id', '=', 'fees.id')
+            ->where('fee_transections.billingcycle',$request->mount."-".$request->year)
+            ->selectRaw('SUM(fees.price_unit) as total')
+            ->first()
+            ->total;
+        $data['debt'] = DB::table('debts')
+        ->sum('total_balance');
+        $data['metre'] = DB::table('metre_transections')
+        ->where('billingcycle',$request->mount."-".$request->year)
+        ->sum('amount');
+        $data['billamount'] = DB::table('bills')
+        ->where('billingcycle',$request->mount."-".$request->year)
+        ->sum('amount');
+        $data['billispaid'] = DB::table('bills')
+        ->where('ispaid',1)
+        ->where('billingcycle',$request->mount."-".$request->year)
+        ->sum('amount');
+        $data['billnotpaid'] = DB::table('bills')
+        ->where('billingcycle',$request->mount."-".$request->year)
+        ->where('ispaid',0)
+        ->sum('amount');
+        $data['notpaid'] = DB::table('bills')
+        ->where('billingcycle',$request->mount."-".$request->year)
+        ->where('ispaid',0)
+        ->count('id');
+        $data['ispaid'] = DB::table('bills')
+        ->where('billingcycle',$request->mount."-".$request->year)
+        ->where('ispaid',1)
+        ->count('id');
+        $data['allbill'] = DB::table('bills')
+        ->where('billingcycle',$request->mount."-".$request->year)
         ->count('id');
         return view('homeadmin',$data);
     }

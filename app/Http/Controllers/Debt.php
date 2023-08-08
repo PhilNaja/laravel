@@ -69,4 +69,14 @@ class Debt extends Controller
             return redirect()->back()->withErrors('เพิ่มข้อมูลไม่สำเร็จ ');
         }
     }
+    public function filterdebtpage(Request $request)
+    {
+        $data['house']=DB::table('houses')->get();
+        $data['debt']=DB::table('debts')
+        ->join('houses','debts.house_id','=','houses.id')
+        ->select('debts.id','houses.housenumber','debts.total_balance','debts.balance','debts.note')
+        ->where('houses.housenumber','like','%'.$request->housenumber.'%')
+        ->paginate(6);
+        return view('compronents.page.debt',$data);
+    }
 }

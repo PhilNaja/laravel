@@ -2,6 +2,42 @@
 @section('content')
 
 <div class="container-md h-100">
+<div class='container-sm mt-1 mb-3 d-flex justify-content-end align-items-end'>
+                        <form class="row g-3" action="{{url('filterhome')}}" method="GET" enctype="multipart/form-data">
+                            <div class="col-auto">
+                                <select class="form-select" aria-label="Default select example" name="mount">
+                                    <option selected value={{Request::get("mount")?? date("m")}}>{{Request::get("mount")?? date("m")}}</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <select class="form-select" aria-label="Default select example" name="year">
+                                    <option selected value="{{Request::get("year")?? date("Y")}}">{{Request::get("year")?? date("Y")}}</option>
+                                    @php
+                                    $currentYear = now()->year; // ปีปัจจุบัน
+                                    $endYear = $currentYear - 15; // ปีที่ลงมา 15 ปี
+                                    @endphp
+                                    @for ($year = $currentYear; $year >= $endYear; $year--)
+                                    <option value="{{ $year }}">{{ $year }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary mb-3">Filter</button>
+                            </div>
+                        </form>
+                    </div>
         <div class="row h-100">
             <div class="col-md-8 mb-3">
                 <div class="card h-100">

@@ -74,24 +74,46 @@ class Type extends Controller
         }
 
     }
-    public function addfee(Request $request)
+    public function addType(Request $request)
     {
-        try {
-            if($request->price_unit>0){
-                DB::table('fees')->insert([
-                    'name' => $request->name,
-                    'price_unit' => $request->price_unit,
-                    'created_at'=>Now(),
-                    'updated_at'=>Now(),
-                ]);
-                return redirect()->back()->with('success','เพิ่มข้อมูลสำเร็จ');
-            }else{
-                return redirect()->back()->withErrors('Price/Unit ห้ามใส่ค่าติดลบ หรือ 0');
+        if($request->type==1){
+            try {
+                if($request->price_unit>0){
+                    DB::table('fees')->insert([
+                        'name' => $request->name,
+                        'price_unit' => $request->price_unit,
+                        'created_at'=>Now(),
+                        'updated_at'=>Now(),
+                    ]);
+                    return redirect()->back()->with('success','เพิ่มข้อมูลสำเร็จ');
+                }else{
+                    return redirect()->back()->withErrors('Price/Unit ห้ามใส่ค่าติดลบ หรือ 0');
+                }
+               
+            } catch (\Throwable $th) {
+                return redirect()->back()->withErrors('เพิ่มข้อมูลไม่สำเร็จ ');
             }
-           
-        } catch (\Throwable $th) {
+        }elseif($request->type==2){
+            try {
+                if($request->price_unit>0){
+                    DB::table('meter_types')->insert([
+                        'name' => $request->name,
+                        'price_unit' => $request->price_unit,
+                        'created_at'=>Now(),
+                        'updated_at'=>Now(),
+                    ]);
+                    return redirect()->back()->with('success','เพิ่มข้อมูลสำเร็จ');
+                }else{
+                    return redirect()->back()->withErrors('Price/Unit ห้ามใส่ค่าติดลบ หรือ 0');
+                }
+               
+            } catch (\Throwable $th) {
+                return redirect()->back()->withErrors('เพิ่มข้อมูลไม่สำเร็จ ');
+            }
+        }else{
             return redirect()->back()->withErrors('เพิ่มข้อมูลไม่สำเร็จ ');
         }
+        return redirect()->back()->withErrors('เพิ่มข้อมูลไม่สำเร็จ ');
         
     }
     public function addmeter(Request $request)
