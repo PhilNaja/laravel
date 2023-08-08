@@ -152,7 +152,7 @@ class bill extends Controller
     }
     public function filterbill(Request $request)
     {
-        $data['data'] = DB::table('bills')->where('billingcycle',$request->date)->get();  
+        $data['data'] = DB::table('bills')->where('billingcycle',$request->mount."-".$request->year)->get();  
         $data['billingcycle'] = DB::table('bills')->select('billingcycle')->distinct()->get();
         $data['houses'] = DB::table('houses')->get();  
         return view('compronents.page.bill',$data);
