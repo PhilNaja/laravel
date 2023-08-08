@@ -1,0 +1,1 @@
+<a class="btn btn-outline-secondary mb-3"href="{{ url('/bill') }}" >Back</a>
