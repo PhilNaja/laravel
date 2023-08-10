@@ -48,8 +48,9 @@ class HomeController extends Controller
             ->selectRaw('SUM(fees.price_unit) as total')
             ->first()
             ->total;
-        $data['debt'] = DB::table('debts')
-        ->sum('total_balance');
+        $data['fine'] = DB::table('fine_transections')
+        ->where('billingcycle',date("m-Y"))
+        ->sum('amount');
         $data['metre'] = DB::table('metre_transections')
         ->where('billingcycle',date("m-Y"))
         ->sum('amount');
@@ -75,6 +76,8 @@ class HomeController extends Controller
         $data['allbill'] = DB::table('bills')
         ->where('billingcycle',date("m-Y"))
         ->count('id');
+        $data['house'] = DB::table('houses')
+        ->count('id');
         return view('homeadmin',$data);
     }
     public function filterhome(Request $request)
@@ -85,8 +88,11 @@ class HomeController extends Controller
             ->selectRaw('SUM(fees.price_unit) as total')
             ->first()
             ->total;
-        $data['debt'] = DB::table('debts')
-        ->sum('total_balance');
+            $data['house'] = DB::table('houses')
+            ->count('id');
+        $data['fine'] = DB::table('fine_transections')
+        ->where('billingcycle',$request->mount."-".$request->year)
+        ->sum('amount');
         $data['metre'] = DB::table('metre_transections')
         ->where('billingcycle',$request->mount."-".$request->year)
         ->sum('amount');

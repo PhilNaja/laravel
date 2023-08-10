@@ -63,8 +63,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::put('/updatefeetype/{id}',[Type::class,'updatefeetype']);
         Route::get('/destroyfee/{id}',[Type::class,'destroyfee']);
         Route::get('/destroymt/{id}',[Type::class,'destroymt']);
-        Route::post('/addType',[Type::class,'addType']);
-        // Route::match(['get', 'post'],'/addmeter',[Type::class,'addmeter']);
+        Route::post('/addtype',[Type::class,'addtype']);
+        Route::match(['get', 'post'],'/addmeter',[Type::class,'addmeter']);
         Route::put('/updatemetertype/{id}',[Type::class,'updatemetertype']);
     
         //house

@@ -41,6 +41,7 @@
                             @csrf
                             <div class="modal-body">
                                 Are you sure you want Create Bills
+                                <input type="hidden" class="form-control"  name="id" value={{$houses}}>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-outline-primary"

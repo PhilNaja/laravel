@@ -28,7 +28,8 @@
     <div class="row">
         <div class="card">
             <div class="card-body">
-                <form action="{{url('addType')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{url('/addtype')}}" method="POST" enctype="multipart/form-data">
+                @csrf
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="inputCity" class="form-label">Name</label>

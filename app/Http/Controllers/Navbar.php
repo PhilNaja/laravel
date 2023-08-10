@@ -36,7 +36,7 @@ class Navbar extends Controller
     {
         $data['data'] = DB::table('bills')->where('billingcycle',date('m-Y'))->get();  
         $data['billingcycle'] = DB::table('bills')->select('billingcycle')->distinct()->get();
-        $data['houses'] = DB::table('houses')->get();  
+        $data['houses'] = DB::table('houses')->select('id')->get();  
         return view('compronents.page.bill',$data);
     }
     public function debtpage()
